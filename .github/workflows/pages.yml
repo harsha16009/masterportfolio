@@ -24,11 +24,13 @@ jobs:
         with:
           node-version: 20
           cache: npm
+      - name: Compute PUBLIC_URL
+        run: echo "PUBLIC_URL=/${{ github.event.repository.name }}" >> "$GITHUB_ENV"
       - run: npm ci
       - run: npm run build
         env:
           CI: "false"
-          PUBLIC_URL: "/${{ github.event.repository.name }}"
+          PUBLIC_URL: ${{ env.PUBLIC_URL }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: build
