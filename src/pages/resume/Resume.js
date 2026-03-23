@@ -3,89 +3,20 @@ import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import { Fade } from "react-reveal";
 import "./Resume.css";
-import myResumePdf from "../../assets/docs/Ashutosh_Hathidara_Resume_ML.pdf";
-import { Document, Page, pdfjs } from "react-pdf";
 import Button from "../../components/button/Button";
 import { greeting } from "../../portfolio";
 import TopButton from "../../components/topButton/TopButton";
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
-
 export default class ResumePage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      pageWidth: null,
-      numPages: null,
-      currentPage: 1,
-      isLoading: true,
-      error: null,
-    };
-  }
-
-  componentDidMount() {
-    this.setPageWidth();
-    window.addEventListener("resize", this.setPageWidth);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.setPageWidth);
-  }
-
-  setPageWidth = () => {
-    const width = window.innerWidth;
-    let pageWidth;
-
-    if (width > 1200) {
-      pageWidth = 930;
-    } else if (width > 768) {
-      pageWidth = 700;
-    } else {
-      pageWidth = width * 0.9;
-    }
-
-    this.setState({ pageWidth });
-  };
-
-  onDocumentLoadSuccess = ({ numPages }) => {
-    this.setState({
-      numPages,
-      isLoading: false,
-      error: null,
-    });
-  };
-
-  onDocumentLoadError = (error) => {
-    console.error("Error loading PDF:", error);
-    this.setState({
-      error: "Failed to load resume. Please try again later.",
-      isLoading: false,
-    });
-  };
-
-  goToPreviousPage = () => {
-    this.setState((prevState) => ({
-      currentPage: Math.max(prevState.currentPage - 1, 1),
-    }));
-  };
-
-  goToNextPage = () => {
-    this.setState((prevState) => ({
-      currentPage: Math.min(prevState.currentPage + 1, prevState.numPages),
-    }));
-  };
-
   render() {
     const theme = this.props.theme;
-    const { pageWidth, numPages, currentPage, isLoading, error } = this.state;
 
     return (
       <div className="resume-main">
         <Header theme={theme} />
         <div className="resume-view">
           <Fade bottom duration={2000} distance="40px">
-            <div>
-              {/* Download Button */}
+            <div className="resume-container">
               <div className="download-btn">
                 <Button
                   text="📃 Download Resume"
@@ -95,100 +26,311 @@ export default class ResumePage extends Component {
                 />
               </div>
 
-              {/* Loading State */}
-              {isLoading && !error && (
-                <div className="resume-loading">
-                  <div className="loading-spinner"></div>
-                  <p>Loading resume...</p>
-                </div>
-              )}
-
-              {/* Error State */}
-              {error && (
-                <div className="resume-error">
-                  <svg
-                    className="error-icon"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    width="48"
-                    height="48"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  <p>{error}</p>
-                  <button
-                    onClick={() => window.location.reload()}
-                    className="retry-btn"
-                    aria-label="Reload resume"
-                  >
-                    Try Again
-                  </button>
-                </div>
-              )}
-
-              {/* PDF Document */}
-              {!error && (
-                <div className="resume-page">
-                  <Document
-                    file={myResumePdf}
-                    onLoadSuccess={this.onDocumentLoadSuccess}
-                    onLoadError={this.onDocumentLoadError}
-                    loading={
-                      <div className="resume-loading">
-                        <div className="loading-spinner"></div>
-                        <p>Loading resume...</p>
-                      </div>
-                    }
-                  >
-                    {pageWidth && (
-                      <Page
-                        pageNumber={currentPage}
-                        width={pageWidth}
-                        loading={
-                          <div className="page-loading">
-                            <div className="loading-spinner"></div>
-                          </div>
-                        }
-                      />
-                    )}
-                  </Document>
-
-                  {/* Pagination Controls */}
-                  {numPages && numPages > 1 && (
-                    <div className="pagination-controls">
-                      <button
-                        onClick={this.goToPreviousPage}
-                        disabled={currentPage === 1}
-                        className="pagination-btn"
-                        aria-label="Previous page"
+              <div
+                className="resume-paper"
+                style={{ backgroundColor: "#FFFFFF", color: "#333" }}
+              >
+                <header className="resume-header">
+                  <h1 className="resume-name" style={{ color: "#2E5B9A" }}>
+                    Harsha Vardhan
+                  </h1>
+                  <div className="resume-contact">
+                    <p>
+                      LinkedIn:{" "}
+                      <a
+                        href="https://linkedin.com/in/allamsetti-harsha-vardhan"
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >
-                        ← Previous
-                      </button>
-                      <span className="page-info" aria-live="polite">
-                        Page {currentPage} of {numPages}
-                      </span>
-                      <button
-                        onClick={this.goToNextPage}
-                        disabled={currentPage === numPages}
-                        className="pagination-btn"
-                        aria-label="Next page"
+                        allamsetti-harsha-vardhan
+                      </a>{" "}
+                      | Email:{" "}
+                      <a href="mailto:allamsetti.harsha2004@gmail.com">
+                        allamsetti.harsha2004@gmail.com
+                      </a>
+                    </p>
+                    <p>
+                      GitHub:{" "}
+                      <a
+                        href="https://github.com/harsha16009"
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >
-                        Next →
-                      </button>
+                        https://github.com/harsha16009
+                      </a>{" "}
+                      | Mobile: +91-8179730596
+                    </p>
+                  </div>
+                </header>
+
+                <section className="resume-section">
+                  <h2 className="section-title">SKILLS</h2>
+                  <div className="section-content">
+                    <p>
+                      <strong>Languages :</strong> C++, Java, Python,
+                      JavaScript, C
+                    </p>
+                    <p>
+                      <strong>Frontend :</strong> HTML, CSS, React.js, Tailwind
+                      CSS
+                    </p>
+                    <p>
+                      <strong>Backend :</strong> Flask, Express.js, MySQL,
+                      MongoDB
+                    </p>
+                    <p>
+                      <strong>Cloud/DevOps :</strong> AWS, Docker, Apache
+                      CloudStack, Azure
+                    </p>
+                    <p>
+                      <strong>Soft Skills :</strong> Problem-Solving, Team
+                      Collaboration, Innovative
+                    </p>
+                  </div>
+                </section>
+
+                <section className="resume-section">
+                  <h2 className="section-title">PROJECTS</h2>
+                  <div className="project-item">
+                    <div className="project-header">
+                      <h3>Library Tracker | HTML, CSS, JS, DSA</h3>
+                      <span>Jun 2025-Jul 2025</span>
                     </div>
-                  )}
-                </div>
-              )}
+                    <ul>
+                      <li>
+                        Designed and developed a digital library management
+                        system using HTML, CSS, JavaScript, and Firebase for
+                        real-time book tracking and secure user handling.
+                      </li>
+                      <li>
+                        Automated borrow/return workflows, reducing manual
+                        tracking effort by 50% and minimizing data
+                        inconsistencies.
+                      </li>
+                      <li>
+                        Implemented optimized search and retrieval using
+                        Hashing, improving book lookup speed by 40%
+                      </li>
+                      <li>
+                        Repository Link:{" "}
+                        <a
+                          href="https://github.com/harsha16009/Library-Trackers2"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          https://github.com/harsha16009/Library-Trackers2
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div className="project-item">
+                    <div className="project-header">
+                      <h3>
+                        YouTube Video Search App (Cloud API Integration) | MERN
+                        Stack
+                      </h3>
+                      <span>Jan 2025-Mar 2025</span>
+                    </div>
+                    <ul>
+                      <li>
+                        Built a cloud-integrated web application that retrieves
+                        video data using the YouTube Data API.
+                      </li>
+                      <li>
+                        Implemented asynchronous API calls to fetch and render
+                        video search results dynamically.
+                      </li>
+                      <li>
+                        Applied component-based architecture in React for
+                        scalable UI development.
+                      </li>
+                      <li>
+                        Repository Link:{" "}
+                        <a
+                          href="https://harsha16009.github.io/react_youtube/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          https://harsha16009.github.io/react_youtube/
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div className="project-item">
+                    <div className="project-header">
+                      <h3>Giphy Search | HTML, CSS, JS, API</h3>
+                      <span>Sep 2023-Dec 2023</span>
+                    </div>
+                    <ul>
+                      <li>
+                        Developed an interactive GIF Search Engine using
+                        JavaScript and the GIPHY API, enabling real-time search,
+                        trending content display, and optimized media loading.
+                      </li>
+                      <li>
+                        Implemented a custom GIF creation module allowing users
+                        to upload multiple images and generate animated GIFs
+                        dynamically through the gifshot library.
+                      </li>
+                      <li>
+                        Engineered a modern UI with animated visual effects,
+                        responsive design, and advanced features such as
+                        download, preview, and link-sharing to enhance user
+                        engagement.
+                      </li>
+                      <li>
+                        Link:{" "}
+                        <a
+                          href="https://harsha16009.github.io/gihy-search/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          https://harsha16009.github.io/gihy-search/
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </section>
+
+                <section className="resume-section">
+                  <h2 className="section-title">TRAINING</h2>
+                  <div className="project-item">
+                    <div className="project-header">
+                      <h3>Data Structures and Algorithms with Java</h3>
+                      <span>Jun 2025-Jul 2025</span>
+                    </div>
+                    <ul>
+                      <li>
+                        Completed an intensive Summer Training Program at Cipher
+                        Schools, achieving top performance across project
+                        evaluations and technical assessments.
+                      </li>
+                      <li>
+                        Gained advanced proficiency through real-world projects,
+                        focusing on problem-solving, clean code practices, and
+                        industry-standard tools.
+                      </li>
+                      <li>
+                        Demonstrated excellence in teamwork, innovation, and
+                        technical execution, significantly strengthening my
+                        professional and placement readiness.
+                      </li>
+                    </ul>
+                  </div>
+                </section>
+
+                <section className="resume-section">
+                  <h2 className="section-title">CERTIFICATES</h2>
+                  <div className="certificate-list">
+                    <div className="certificate-item">
+                      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                      <span>
+                        • Cloud Architecting{" "}
+                        <a href="#!" style={{ color: "#2E5B9A" }}>
+                          AWS
+                        </a>
+                      </span>
+                      <span>Jan 2026</span>
+                    </div>
+                    <div className="certificate-item">
+                      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                      <span>
+                        • Docker Foundation Essentials{" "}
+                        <a href="#!" style={{ color: "#2E5B9A" }}>
+                          IBM
+                        </a>
+                      </span>
+                      <span>Nov 2025</span>
+                    </div>
+                    <div className="certificate-item">
+                      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                      <span>
+                        • Data Structures and Algorithms{" "}
+                        <a href="#!" style={{ color: "#2E5B9A" }}>
+                          Certificate Link
+                        </a>
+                      </span>
+                      <span>Jul 2025</span>
+                    </div>
+                    <div className="certificate-item">
+                      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                      <span>
+                        • freeCodeCamp{" "}
+                        <a href="#!" style={{ color: "#2E5B9A" }}>
+                          Certificate Link
+                        </a>
+                      </span>
+                      <span>Oct 2023</span>
+                    </div>
+                  </div>
+                </section>
+
+                <section className="resume-section">
+                  <h2 className="section-title">ACHIEVEMENTS</h2>
+                  <div className="certificate-list">
+                    <div className="certificate-item">
+                      <span>
+                        • Achieved Gold League status on Coding Ninjas for
+                        Coding | Code 360
+                      </span>
+                      <span>Nov 2025</span>
+                    </div>
+                    <div className="certificate-item">
+                      <span>
+                        • Top Ranker of the week in Problem-Solving | LeetCode
+                      </span>
+                      <span>Oct 2025</span>
+                    </div>
+                  </div>
+                </section>
+
+                <section className="resume-section">
+                  <h2 className="section-title">EDUCATION</h2>
+                  <div className="education-item">
+                    <div className="edu-header">
+                      <strong>Lovely Professional University</strong>
+                      <span>Punjab, India</span>
+                    </div>
+                    <div className="edu-sub">
+                      <em>
+                        Bachelor of Technology - Computer Science and
+                        Engineering; <strong>CGPA: 7.0</strong>
+                      </em>
+                      <span>Since Aug 2023</span>
+                    </div>
+                  </div>
+                  <div className="education-item">
+                    <div className="edu-header">
+                      <strong>Narayana Junior College</strong>
+                      <span>Vijayawada, Andhra Pradesh</span>
+                    </div>
+                    <div className="edu-sub">
+                      <em>
+                        Intermediate; <strong>Percentage: 94.4</strong>
+                      </em>
+                      <span>Apr 2021-Mar 2023</span>
+                    </div>
+                  </div>
+                  <div className="education-item">
+                    <div className="edu-header">
+                      <strong>Viswasanthi High School</strong>
+                      <span>Bhattiprolu, Guntur</span>
+                    </div>
+                    <div className="edu-sub">
+                      <em>
+                        Matriculation; <strong>Percentage: 91</strong>
+                      </em>
+                      <span>Apr 2020-Mar 2021</span>
+                    </div>
+                  </div>
+                </section>
+              </div>
             </div>
           </Fade>
         </div>
-        <Footer theme={theme} onToggle={this.props.onToggle}/>
+        <Footer theme={theme} onToggle={this.props.onToggle} />
         <TopButton theme={theme} />
       </div>
     );
