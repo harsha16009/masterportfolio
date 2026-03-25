@@ -4,7 +4,7 @@ import Footer from "../../components/footer/Footer";
 import { Fade } from "react-reveal";
 import "./Resume.css";
 import Button from "../../components/button/Button";
-import { greeting } from "../../portfolio";
+import { greeting, certifications, socialMediaLinks } from "../../portfolio";
 import TopButton from "../../components/topButton/TopButton";
 
 export default class ResumePage extends Component {
@@ -38,11 +38,11 @@ export default class ResumePage extends Component {
                     <p>
                       LinkedIn:{" "}
                       <a
-                        href="https://linkedin.com/in/allamsetti-harsha-vardhan"
+                        href={socialMediaLinks.find(s => s.name === "LinkedIn").link}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        allamsetti-harsha-vardhan
+                        {socialMediaLinks.find(s => s.name === "LinkedIn").link.split("/in/")[1].replace("/", "")}
                       </a>{" "}
                       | Email:{" "}
                       <a href="mailto:allamsetti.harsha2004@gmail.com">
@@ -224,46 +224,22 @@ export default class ResumePage extends Component {
                 <section className="resume-section">
                   <h2 className="section-title">CERTIFICATES</h2>
                   <div className="certificate-list">
-                    <div className="certificate-item">
-                      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                      <span>
-                        • Cloud Architecting{" "}
-                        <a href="#!" style={{ color: "#2E5B9A" }}>
-                          AWS
-                        </a>
-                      </span>
-                      <span>Jan 2026</span>
-                    </div>
-                    <div className="certificate-item">
-                      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                      <span>
-                        • Docker Foundation Essentials{" "}
-                        <a href="#!" style={{ color: "#2E5B9A" }}>
-                          IBM
-                        </a>
-                      </span>
-                      <span>Nov 2025</span>
-                    </div>
-                    <div className="certificate-item">
-                      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                      <span>
-                        • Data Structures and Algorithms{" "}
-                        <a href="#!" style={{ color: "#2E5B9A" }}>
-                          Certificate Link
-                        </a>
-                      </span>
-                      <span>Jul 2025</span>
-                    </div>
-                    <div className="certificate-item">
-                      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                      <span>
-                        • freeCodeCamp{" "}
-                        <a href="#!" style={{ color: "#2E5B9A" }}>
-                          Certificate Link
-                        </a>
-                      </span>
-                      <span>Oct 2023</span>
-                    </div>
+                    {certifications.certifications.map((cert, index) => (
+                      <div className="certificate-item" key={index}>
+                        <span>
+                          • {cert.title}{" "}
+                          <a
+                            href={cert.certificate_link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ color: "#2E5B9A" }}
+                          >
+                            {cert.subtitle === "Certificate" ? "View Certificate" : cert.subtitle}
+                          </a>
+                        </span>
+                        <span>{cert.duration || "Jan 2026"}</span>
+                      </div>
+                    ))}
                   </div>
                 </section>
 

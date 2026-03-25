@@ -1,16 +1,14 @@
-FROM node:20.11-alpine
-
-# set working directory
+# Stage 1: Build the React application
+FROM node:20.11-alpine as build
 WORKDIR /app
-
-# install app dependencies
 COPY package.json package-lock.json ./
 RUN npm install
-
-# add app
 COPY . ./
+RUN npm run build
 
+# Stage 2: Serve the application using Nginx
+FROM nginx:alpine
+COPY --from=build /app/build /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 3001
-
-# start app
-CMD ["npm", "start"]
+CMD ["nginx", "-g", "daemon off;"]
